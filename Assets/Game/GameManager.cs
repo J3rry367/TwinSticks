@@ -6,12 +6,12 @@ using UnityStandardAssets.CrossPlatformInput;
 public class GameManager : MonoBehaviour {
 
     public bool isRecording = true;
+    public bool isPaused = false;
+    private float initialFixedDeltaTime;
 
     private void Start()
     {
-        PlayerPrefsManager.UnlockLevel(2);
-        print(PlayerPrefsManager.IsLevelUnlocked(1));
-        print(PlayerPrefsManager.IsLevelUnlocked(2));
+        initialFixedDeltaTime = Time.fixedDeltaTime;
     }
 
     void Update () {
@@ -23,5 +23,34 @@ public class GameManager : MonoBehaviour {
         {
             isRecording = true;
         }
+
+        if (CrossPlatformInputManager.GetButtonDown("Pause") && isPaused)
+        {
+            UnPauseGame();
+        }else if (CrossPlatformInputManager.GetButtonDown("Pause") && !isPaused)
+        {
+            PauseGame();
+        }
 	}
+
+    void PauseGame()
+    {
+        isPaused = true;
+        Time.timeScale = 0;
+        Time.fixedDeltaTime = 0;
+        print("Paused");
+        // add graphical indication showing game has been paused.
+    }
+
+    void UnPauseGame()
+    {
+        isPaused = false;
+        Time.timeScale = 1;
+        Time.fixedDeltaTime = initialFixedDeltaTime;
+    }
+
+    private void OnApplicationPause(bool pause)
+    {
+        isPaused = pause;
+    }
 }
