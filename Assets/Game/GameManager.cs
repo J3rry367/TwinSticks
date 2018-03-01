@@ -7,7 +7,14 @@ public class GameManager : MonoBehaviour {
 
     public bool isRecording = true;
 
-	void Update () {
+    private void Start()
+    {
+        PlayerPrefsManager.UnlockLevel(2);
+        print(PlayerPrefsManager.IsLevelUnlocked(1));
+        print(PlayerPrefsManager.IsLevelUnlocked(2));
+    }
+
+    void Update () {
         if (CrossPlatformInputManager.GetButton("Fire1"))
         {
             isRecording = false;
